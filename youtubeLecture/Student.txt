@@ -1,0 +1,42 @@
+Lisa Simpson
+2006303001
+2000
+Computer Engineering
+01012345678
+
+Lisa Simpson
+2006303001
+2000
+Computer Engineering
+01012345678
+
+Gildong Hong
+2004303077
+1999
+Computer Engineering
+01187651234
+
+Harry Potter
+2001303099
+1998
+Magic Engineering
+01048727479
+
+Hermione Granger
+2008303002
+1999
+Art
+01045678789
+
+Elsa
+2007303001
+2007
+Ice world
+01088898887
+
+Takashi
+2010000000
+1987
+Band
+098765433
+

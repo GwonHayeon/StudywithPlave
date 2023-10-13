@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <list>
-//void writeFile(list<PlaveMember>& l);
+#include <string>
 void readFile();
 void printMenu();
 void printSearch();

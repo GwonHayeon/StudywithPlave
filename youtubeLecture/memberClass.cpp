@@ -1,18 +1,25 @@
 #include <string>
 using namespace std;
-class PlaveMember {
+class Student {
 
 public:
 	string name;
-	string age;
-	string position;
-	PlaveMember(string _name, string _age, string _position)
+	string studentId;
+	string birthYear;
+	string departmentName;
+	string tel;
+	Student(string _name, string _studentId, string _birthYear, string _departmentName, string _tel)
 	{
 		name = _name;
-		age = _age;
-		position = _position;
+		studentId = _studentId;
+		birthYear = _birthYear;
+		departmentName = _departmentName;
+		tel = _tel;
 	};
 	string getName() { return name; }
-	string getAge() { return age; }
-	string getPosition() { return position; }
+	string getStudentId() { return studentId; }
+	string getBirthYear() { return birthYear; }
+	string getDepartment() { return departmentName; }
+	string getTel() { return tel; }
+	string getAdmissionYear() { return studentId.substr(0,4); }
 };

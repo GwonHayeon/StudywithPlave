@@ -6,219 +6,231 @@
 #include "memberClass.cpp"
 #include <algorithm> 
 using namespace std;
+int sortOption = 1; //default sortOption is Name
 
-void writeFile(list<PlaveMember>& l) {
-	ofstream file("Plave.txt", ios::app); //example 파일을 연다. 없으면 생성
-
+void doInsertion(list<Student>& l) {
+	ofstream file("file1.txt", ios::app); //open file1.txt. if not, then generate
 	if (file.is_open()) {
-		//멤버객체 생성
-//		list<PlaveMember> memberList;
-
-		cout << "Name? ";
+		//generate member obj
 		string name;
-		cin >> name;
+		cin.ignore(100, '\n');
+		do {
+			cout << "Name ? ";
+			getline(cin, name);
+		} while (name.empty());
 
-		cout << "Age? ";
-		string age;
-		cin >> age;
 
-		cout << "Position? ";
-		string position;
-		cin >> position;
+		//studentId can't same and not empty
+		string studentId;
+		int isExist=-1;
+		do {
+			cout << "Student ID (10 digits) ? ";
+			getline(cin, studentId);
+			isExist = 1;
+			if (!studentId.empty()) { 
+				for (Student& member : l) {	if (member.getStudentId() == studentId)	{isExist = 0;} }
+				if (isExist == 0) { cout << "Error : already inserted" << endl; }
+			}
+			else { isExist = -1; }
+		} while (isExist<1);
+		
+		cout << "Birth Year (4 digits) ? ";
+		string birthYear;
+		cin >> birthYear;
 
-		//입력받은 내용을 메모장에 입력한다
+		cout << "Department ? ";
+		cin.ignore(100, '\n');
+		string departmentName;
+		getline(cin, departmentName);
+
+		cout << "Tel ? ";
+		string tel;
+		getline(cin, tel);
+		
+		//write input to in text file
 		file << name << endl;
-		file << age << endl;
-		file << position << "\n" << endl;
+		file << studentId << endl;
+		file << birthYear << endl;
+		file << departmentName << endl;
+		file << tel << "\n" << endl;
 		file.close();
 
-		//멤버객체에 저장
-		PlaveMember member = PlaveMember(name, age, position);
-		//멤버리스트에 객체저장
+		//save Student obj
+		Student member = Student(name, studentId, birthYear, departmentName, tel);
+		//save obj to list
 		l.push_back(member);
-
-		cout << "add meber : " << member.getName();
 	}
 	else {
-		cout << "Unable to open file";
+		cout << "Unable to open file" << endl;
 	}
 }
 
-void printMember(list<PlaveMember> l) { //리스트를 출력하는 형식
-	list<PlaveMember>::iterator it;
-	for (PlaveMember& member : l) {
-		cout << member.getAge() <<"살 " << member.getPosition() << "담당 " << member.getName() << "\n";
+void printMember(list<Student> l) { 
+	//print Student by sortOption
+	l.sort([](Student& a, Student& b) {
+		switch (sortOption) {
+		case 1: //name
+			return a.getName() < b.getName();
+		case 2: //id
+			return a.getStudentId() < b.getStudentId();
+		case 3: //Admission year
+			return a.getAdmissionYear() < b.getAdmissionYear();
+		case 4: //Department
+			return a.getDepartment() < b.getDepartment();
+		defualt:
+			return a.getName() < b.getName();
+		}
+		});
+	cout << "Name\t       " << "StudentID " << "Dept   \t\t" << "Birth Year " << "Tel" << "\n";
+	for (Student& member : l) {
+		cout << member.getName() << "  " << member.getStudentId() << " " << member.getDepartment() << "\t      " << member.getBirthYear() << " " << member.getTel() << "\n";
 	}
 }
-
-//검색 리스트
-
-void readData(list<PlaveMember>& plaveList) {
+void readData(list<Student>& studentList) {
 	string line;
-	ifstream file("Plave.txt"); //example 파일을 연다. 없으면 생성
+	ifstream file("file1.txt"); 	//open txt file. if not, generate
 	if (file.is_open()) {
 		while (file) {
 			string name;
 			getline(file, name);
-			string age;
-			getline(file, age);
-			string position;
-			getline(file, position);
+			string studentId;
+			getline(file, studentId);
+			string birthYear;
+			getline(file, birthYear);
+			string departmentName;
+			getline(file, departmentName);
+			string tel;
+			getline(file, tel);
 			string none;
 			getline(file,none);
-			PlaveMember plaveMember = PlaveMember(name, age, position);
-			if (!name.empty()) {
-				plaveList.push_back(plaveMember);
+			Student studentMember = Student(name, studentId, birthYear, departmentName, tel);
+			if (!name.empty() || !studentId.empty()) {
+				studentList.push_back(studentMember);
 			}
 		}
-		//printMember(plaveList);
 		file.close();
-	}
-	else {
+	} else {
 		cout << "Unable to open file";
 	}
 }
 
-void printName(list<PlaveMember> plaveList)
+void printName(list<Student> studentList)
 {
 	cin.ignore(100, '\n');
 	string search;
-	cout << "이름 입력 >> ";
+	cout << "Name? ";
 	getline(cin, search);
-	list<PlaveMember> l;
-	//list<PlaveMember>::iterator it;
-	for (PlaveMember member : plaveList) {
-		if (member.getName() == search)
+	list<Student> l;
+	for (Student member : studentList) {
+		if (member.getName().find(search) != string::npos)
 		{
 			l.push_back(member);
 		}
 	}
 	if (l.size() == 0) { cout << "No such Member" << endl; }
-	printMember(l);
+	else { printMember(l); }
 }
 
-void printAge(list<PlaveMember> plaveList)
+void printStudentId(list<Student> studentList)
 {
 	cin.ignore(100, '\n');
 	string search;
-	cout << "나이 입력 >> ";
+	cout << "Student ID? ";
 	getline(cin, search);
-	list<PlaveMember> l;
-	for (PlaveMember member : plaveList) {
-		if (member.getAge() == search)
+	list<Student> l;
+	for (Student member : studentList) {
+		if (member.getStudentId() == search)
 		{
 			l.push_back(member);
 		}
 	}
 	if (l.size() == 0) { cout << "No such Member" << endl; }
-	printMember(l);
+	else {	printMember(l); }
 }
 
-void printPosition(list<PlaveMember> plaveList)
+void printAdmissionYear(list<Student> studentList)
 {
 	cin.ignore(100, '\n');
 	string search;
-	cout << "Position 입력 >> ";
+	cout << "Admission Year? ";
 	getline(cin, search);
-	list<PlaveMember> l;
-	for (PlaveMember member : plaveList) {
-		if (member.getPosition() == search)
+	list<Student> l;
+	for (Student member : studentList) {
+		if (member.getAdmissionYear() == search)
 		{
 			l.push_back(member);
 		}
 	}
 	if (l.size() == 0) { cout << "No such Member" << endl; }
-	printMember(l);
+	else{	printMember(l);	}
 }
 
-void searchMenu(list<PlaveMember> plaveList) {
+void printDepartment(list < Student> studentList) {
+	cout << "Department name keyword? ";
+	string search;
+	cin >> search;
+	list<Student> l;
+	for (Student member : studentList) {
+		if (member.getDepartment().find(search) != string::npos) {
+			l.push_back(member);
+		}
+	}
+	if (l.size() == 0) { cout << "No such Member" << endl; }
+	else { printMember(l); }
+
+}
+
+void searchMenu(list<Student> studentList) {
 	printSearch();
 	int choice2 = -1;
 	cin >> choice2;
 	switch (choice2) {
 		case 1:
-			printName(plaveList);
+			printName(studentList);
 			break;
 		case 2:
-			printAge(plaveList);
+			printStudentId(studentList);
 			break;
 		case 3:
-			printPosition(plaveList);
+			printAdmissionYear(studentList);
 			break;
 		case 4:
-			printMember(plaveList);
+			printDepartment(studentList);
+			break;
+		case 5:
+			printMember(studentList);
 			break;
 		default:
 			break;
 	}
 }
 
-void sortByName(list<PlaveMember>& l) {
-	l.sort([](const PlaveMember& a, const PlaveMember& b) {
-		return a.name < b.name;
-	});
-	printMember(l);
-}
-
-void sortByAge(list<PlaveMember>& l) {
-	l.sort([](const PlaveMember& a, const PlaveMember& b) {
-		return a.age < b.age;
-		});
-	printMember(l);
-}
-
-
-void sortByPosition(list<PlaveMember>& l) {
-	l.sort([](const PlaveMember& a, const PlaveMember& b) {
-		return a.position < b.position;
-		});
-	printMember(l);
-}
-
-void sortingMenu(list<PlaveMember> plaveList) {
+void sortingMenu(list<Student> studentList) {
 	printSorting();
-	int choice2 = -1;
-	cin >> choice2;
-	switch (choice2) {
-	case 1:
-		sortByName(plaveList);
-		break;
-	case 2:
-		sortByAge(plaveList);
-		break;
-	case 3:
-		sortByPosition(plaveList);
-		break;
-/*
-	case 4:
-		printMember(plaveList);
-		break;
-		*/
-	default:
-		break;
-	}
+	int chooseSort = -1;
+	cin >> chooseSort;
+	sortOption = chooseSort;
+	printMember(studentList);
 }
+
 int main() {
-	list<PlaveMember> plaveList;
+	list<Student> studentList;
 	int choice=-1;
-	readData(plaveList);
+	readData(studentList);
 	while (true) {
 		printMenu();
 		cin >> choice;
 		switch (choice) {
-			case 1: //메모장에 쓰기
-				writeFile(plaveList);
+			case 1: //insertion
+				doInsertion(studentList);
 				break;
-			case 2: //메모장 읽어오기
-				readFile();
+			case 2: //search
+				searchMenu(studentList);
 				break;
-			case 3: //탐색
-				searchMenu(plaveList);
+			case 3: //sort
+				sortingMenu(studentList);
 				break;
-			case 4: //정렬
-				sortingMenu(plaveList);
-				break;
-			case 5: //종료
+			case 4: //exit
 				return 0;
 			default:
 				break;

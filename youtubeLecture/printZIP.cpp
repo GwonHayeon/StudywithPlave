@@ -1,24 +1,28 @@
 #include <string>
 #include "funtionZip.h"
+#include "memberClass.cpp"
 using namespace std;
 void printMenu() {
-	cout << "1. write" << endl;
-	cout << "2. read" << endl;
-	cout << "3. search" << endl;
-	cout << "4. sort" << endl;
-	cout << "5. exit" << endl;
+	cout << "1. Insertion" << endl;
+	cout << "2. Search" << endl;
+	cout << "3. Sorting Option" << endl;
+	cout << "4. exit" << endl;
 }
 
 void printSearch() {
-	cout << "1. search by Name" << endl;
-	cout << "2. search by age" << endl;
-	cout << "3. search by Position" << endl;
-	cout << "4. list all" << endl;
+	cout << "- Search -" << endl;
+	cout << "1. Search by name" << endl;
+	cout << "2. Search by student ID (10 numbers)" << endl;
+	cout << "3. Search by admission year (4 numbers)" << endl;
+	cout << "4. Search by department name" << endl;
+	cout << "5. List All" << endl;
 }
 
 void printSorting() {
-	cout << "1. sort by Name" << endl;
-	cout << "2. sort by age" << endl;
-	cout << "3. sort by Position" << endl;
-	//cout << "4. list all" << endl;
+	cout << "- Sorting Option -" << endl;
+	cout << "1. Sort by Name" << endl;
+	cout << "2. Sort by Student ID" << endl;
+	cout << "3. Sort by Admission Year" << endl;
+	cout << "4. Sort by Department name" << endl;
 }
+
